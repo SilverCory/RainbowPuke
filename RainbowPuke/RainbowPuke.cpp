@@ -83,10 +83,11 @@ void update(std::future<void> futureObj) {
 			cout << "An error occurred duing sending the matrix.. Angle: " << angle << endl;
 		}
 
-		angle = angle + 4;
+		angle = angle + 6;
 		if (angle > 360) {
 			angle = angle - 360;
 		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(15));
 
 	}
 }
@@ -116,7 +117,9 @@ int main() {
 	signal(SIGINT, &deathHandler);
 	SetConsoleCtrlHandler((PHANDLER_ROUTINE)windowsDeath, TRUE);
 
-	while (1);
+	while (1) {
+		std::this_thread::sleep_for(std::chrono::seconds(5));
+	}
 	return 0;
 }
 
