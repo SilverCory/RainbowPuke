@@ -14,6 +14,12 @@
 
 using namespace std;
 
+// Change this to your device.
+// DEV_MKeys_L, DEV_MKeys_S, DEV_MKeys_L_White, DEV_MKeys_M_White, DEV_MMouse_L, DEV_MMouse_S,
+// DEV_MKeys_M, DEV_MKeys_S_White, DEV_MM520, DEV_MM530, DEV_MK750, DEV_CK372, DEV_CK550_552, 
+// DEV_CK551, DEV_DEFAULT
+const DEVICE_INDEX useDevice = DEV_MKeys_S;
+
 const uint8_t HSVlights[61] =
 { 0, 4, 8, 13, 17, 21, 25, 30, 34, 38, 42, 47, 51, 55, 59, 64, 68, 72, 76,
 81, 85, 89, 93, 98, 102, 106, 110, 115, 119, 123, 127, 132, 136, 140, 144,
@@ -60,8 +66,8 @@ void createColourMatrix(int angle) {
 void update(std::future<void> futureObj) {
 
 	int angle = 0;
-	SetControlDevice(DEV_MKeys_S);
-	if (!EnableLedControl(true, DEV_MKeys_S)) {
+	SetControlDevice(useDevice);
+	if (!EnableLedControl(true, useDevice)) {
 		cout << "Unable to enable LED control..." << endl;
 		exit(1);
 	}
@@ -69,7 +75,7 @@ void update(std::future<void> futureObj) {
 	while (futureObj.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout) {
 
 		while (futureObj.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout) {
-			if (!IsDevicePlug(DEV_MKeys_S)) {
+			if (!IsDevicePlug(useDevice)) {
 				cout << "No device detected" << endl;
 			}
 			else {
@@ -79,7 +85,7 @@ void update(std::future<void> futureObj) {
 		}
 
 		createColourMatrix(angle);
-		if (!SetAllLedColor(matrix, DEV_MKeys_S)) {
+		if (!SetAllLedColor(matrix, useDevice)) {
 			cout << "An error occurred duing sending the matrix.. Angle: " << angle << endl;
 		}
 
@@ -99,10 +105,10 @@ std::thread updateThread(&update, std::move(futureObj));
 void deathHandler(int s) {
 	exitSignal.set_value();
 	updateThread.join();
-	SetFullLedColor(0, 0, 0, DEV_MKeys_S);
-	EnableLedControl(false, DEV_MKeys_S);
-	RefreshLed(false, DEV_MKeys_S);
-	SwitchLedEffect(EFF_FULL_ON, DEV_MKeys_S);
+	SetFullLedColor(0, 0, 0, useDevice);
+	EnableLedControl(false, useDevice);
+	RefreshLed(false, useDevice);
+	SwitchLedEffect(EFF_FULL_ON, useDevice);
 	exit(0);
 }
 
