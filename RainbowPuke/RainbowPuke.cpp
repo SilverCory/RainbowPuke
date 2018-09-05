@@ -37,19 +37,19 @@ void createColourMatrix(int angle) {
 		}
 
 		BYTE red, green, blue;
-		if (angle < 60) { red = 255; green = HSVlights[angle]; blue = 0; }
-		else
-			if (angle < 120) { red = HSVlights[120 - angle]; green = 255; blue = 0; }
-			else
-				if (angle < 180) { red = 0, green = 255; blue = HSVlights[angle - 120]; }
-				else
-					if (angle < 240) { red = 0, green = HSVlights[240 - angle]; blue = 255; }
-					else
-						if (angle < 300) { red = HSVlights[angle - 240], green = 0; blue = 255; }
-						else
-						{
-							red = 255, green = 0; blue = HSVlights[360 - angle];
-						}
+		if (angle < 60) {
+			red = 255; green = HSVlights[angle]; blue = 0; 
+		} else if (angle < 120) {
+			red = HSVlights[120 - angle]; green = 255; blue = 0;
+		} else if (angle < 180) {
+			red = 0, green = 255; blue = HSVlights[angle - 120];
+		} else if (angle < 240) { 
+			red = 0, green = HSVlights[240 - angle]; blue = 255; 
+		} else if (angle < 300) { 
+			red = HSVlights[angle - 240], green = 0; blue = 255;
+		} else {
+			red = 255, green = 0; blue = HSVlights[360 - angle];
+		}
 
 		for (int row = 0; row < MAX_LED_ROW; row++) {
 			if ((row == 0 && column == 16 && (GetKeyState(VK_SCROLL) & 0x0001) == 0) || (row == 3 && column == 0 && (GetKeyState(VK_CAPITAL) & 0x0001) == 0)) {
